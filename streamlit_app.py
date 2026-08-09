@@ -87,7 +87,9 @@ def get_api_key() -> str | None:
 
 
 def build_user_message(context: str, intent: str, audience: str) -> str:
-    intent_text = intent.strip() or "(not specified — infer the most likely intent from the context)"
+    intent_text = (
+        intent.strip() or "(not specified — infer the most likely intent from the context)"
+    )
     return (
         f"Target audience: {audience}\n\n"
         f"Context / scenario: {context.strip()}\n\n"
@@ -112,9 +114,7 @@ def call_groq(client: Groq, messages: list[dict[str, str]]) -> dict[str, Any]:
         except Exception as exc:  # noqa: BLE001
             last_error = exc
             continue
-    raise RuntimeError(
-        f"Both primary and fallback models failed. Last error: {last_error}"
-    )
+    raise RuntimeError(f"Both primary and fallback models failed. Last error: {last_error}")
 
 
 def render_suggestion_card(label: str, icon: str, body: str) -> None:
@@ -131,7 +131,9 @@ def render_suggestion_card(label: str, icon: str, body: str) -> None:
 _PAREN_EXAMPLE_RE = re.compile(r"\([^)]{2,}\)")
 _QUOTED_EXAMPLE_RE = re.compile(r"[\"']([^\"']{2,})[\"']")
 _ITALIC_EXAMPLE_RE = re.compile(r"(?<!\*)\*[^\*]{2,}\*(?!\*)")
-_PREFIX_EXAMPLE_RE = re.compile(r"\b(e\.g\.|example:|for example|such as|like this)\b", re.IGNORECASE)
+_PREFIX_EXAMPLE_RE = re.compile(
+    r"\b(e\.g\.|example:|for example|such as|like this)\b", re.IGNORECASE
+)
 
 
 def has_example(text: str) -> bool:
@@ -174,9 +176,7 @@ def call_groq_with_examples(
     if not missing:
         return data
 
-    bullets = "\n".join(
-        f"- {key}[{idx}]: {text or '(empty)'}" for key, idx, text in missing
-    )
+    bullets = "\n".join(f"- {key}[{idx}]: {text or '(empty)'}" for key, idx, text in missing)
     followup = {
         "role": "user",
         "content": (
@@ -270,8 +270,7 @@ def main() -> None:
     api_key = get_api_key()
     if not api_key:
         st.warning(
-            "Please provide your Groq API key in the sidebar to start "
-            "getting suggestions.",
+            "Please provide your Groq API key in the sidebar to start getting suggestions.",
             icon=":material/key:",
         )
         st.stop()

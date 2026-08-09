@@ -1,0 +1,11 @@
+# Ruff configuration for LinguaMate.
+# The PostToolUse hook in .puku-cli/settings.json runs `ruff format` on every
+# Write/Edit, so this file just keeps the formatter opinionated enough to be
+# useful without surprising the team on import-sorting rules.
+
+line-length = 100
+target-version = "py311"
+
+[format]
+quote-style = "double"
+indent-style = "space"
